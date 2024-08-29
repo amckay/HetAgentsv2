@@ -22,6 +22,6 @@ It is relatively straightforward to add [perfect-foresight transitions](MIT.html
 
 These notes will present the ideas without getting too deep into the code that implements them. The methods are implemented by a set of of [Julia programs](https://github.com/amckay/HetAgentsv2), which are described throughout the notes.
 
-These notes were heavily updated in the Summer of 2024. [The previous version is available here](https://alisdairmckay.com/Notes/HetAgents_v1/).
+These notes were heavily updated in the Summer of 2024. [The previous version is available here](https://alisdairmckay.com/Notes/HetAgentsV1/).
 
 
