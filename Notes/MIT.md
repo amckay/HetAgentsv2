@@ -44,7 +44,7 @@ for some step size $s\in(0,1]$.
 
 ## Codes
 
-See `MITshocks.jl` for an application where we simulate a 3% positive TFP shock. The transition path should look like the figure below.
+See `MIT.jl` for an application where we simulate a 3% positive TFP shock. The transition path should look like the figure below.
 
 ![Perfect foresight transition path following TFP shock](Figures/MIT.png)
 
