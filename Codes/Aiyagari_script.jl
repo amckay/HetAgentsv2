@@ -9,7 +9,7 @@ compute_ss!(ss,par,grid);
 
 # make the classic Aiyagari (1994) figure
 Kgrid = KCompleteMarkets .+ collect(0:0.25:1.25) * (ss[:K] - KCompleteMarkets);
-Ksupply = [K+checkK!(K) for K in Kgrid];
+Ksupply = [K+checkK!(K,par,grid) for K in Kgrid];
 Rgrid = [getWR(par,K)[2] for K in Kgrid];
 plot(Ksupply,Rgrid,label="Capital supply",ylabel="R",xlabel="K",width=3);
 p = plot!([Kgrid;48],[Rgrid;getWR(par,48)[2]],xlim=[40;60], label="Capital demand",legend=:bottomright,width=3)
