@@ -4,11 +4,11 @@ using Roots: find_zero
 
 # parameters
 @with_kw struct Par 
-    α = 0.4
-    β = 0.98
-    γ = 2.0
-    δ = 0.02
-    ρ = 0.95
+    α :: Float64 = 0.4
+    β :: Float64 = 0.98
+    γ :: Float64 = 2.0
+    δ :: Float64 = 0.02
+    ρ :: Float64 = 0.95
 end
 par = Par();
 
@@ -74,7 +74,7 @@ end
     Va_p in t+1 and prices at date t Xt, we produce the marginal value of assets at t 
     and the saving and consumption policy rules at t.
 """
-function EGMStepBack(Va_p,Xt,par,grid)
+function EGMStepBack(Va_p::Array{Float64,2},Xt,par,grid)
     @unpack β, γ = par
     W,R = Xt
 

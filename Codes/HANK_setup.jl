@@ -6,17 +6,17 @@ include("_aux/rouwenhorst.jl")
 
 # parameters
 @with_kw mutable struct Par
-    α = 0.4
-    β = 0.98
-    γ = 2.0
-    δ = 0.02
-    ρ = 0.95
-    Ā = 4*1.4
-    η̄ = 0.05
-    R̄ = 1.005;
-    κ = 0.1;
-    ϕ = 1.5;
-    ρA = 0.97;
+    α  :: Float64 = 0.4
+    β  :: Float64 = 0.98
+    γ  :: Float64 = 2.0
+    δ  :: Float64 = 0.02
+    ρ  :: Float64 = 0.95
+    Ā  :: Float64 = 4*1.4
+    η̄  :: Float64 = 0.05
+    R̄  :: Float64 = 1.005;
+    κ  :: Float64 = 0.1;
+    ϕ  :: Float64 = 1.5;
+    ρA :: Float64 = 0.97;
 end
 par = Par();
 
@@ -92,7 +92,7 @@ end
     Va_p in t+1 and prices at date t Xt, we produce the marginal value of assets at t 
     and the saving and consumption policy rules at t.
 """
-function EGMStepBack(Va_p,Xt,par,grid)
+function EGMStepBack(Va_p::Array{Float64,2},Xt,par::Par,grid::HAGrids)
     @unpack β, γ = par
     Y,R,τ,η = Xt
 
@@ -114,11 +114,11 @@ function EGMStepBack(Va_p,Xt,par,grid)
 end
 
 
-function checkβ!(β,par,grid) # this overwrites the global c0 and par.β
+function checkβ!(β::Float64,ssX::Matrix{Float64},par::Par,grid::HAGrids) # this overwrites the global c0 and par.β
     # we fix the steady state real interest rate and calibrate β to clear the asset market
     par.β = β
-    _, g, c0[:] = SolveEGM(c0,ss[:X],par,grid);
-    Dss = stationarydistribution(maketransmat(g,grid));
+    _, g, c0[:] = SolveEGM(c0,ssX,par,grid);
+    Dss = stationarydistribution(maketransmat(g,grid),method=:simulate);
     A_implied = aggregator(g,c0,Dss); 
     println("β = $β: market clearing = $(A_implied-par.Ā)")
     return A_implied - par.Ā
@@ -128,7 +128,7 @@ end
 function compute_ss!(ss,par,grid)
     println("Computing steady state...")
     β_bracket = [0.97, 0.99]
-    par.β = find_zero(b -> checkβ!(b,par,grid), β_bracket,atol=1e-7)
+    par.β = find_zero(b -> checkβ!(b,ss[:X],par,grid), β_bracket,atol=1e-7)
     ss[:Va], ss[:g], ss[:c] = SolveEGM(ss[:c],ss[:X],par,grid);  #compute the ss decision rules 
     ss[:D] = stationarydistribution(maketransmat(ss[:g],grid)); #compute the ss distribution
     ss[:agg] = aggregator(ss[:g],ss[:c],ss[:D]); # store the ss aggregates
